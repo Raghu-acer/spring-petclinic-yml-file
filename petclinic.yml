@@ -1,38 +1,43 @@
 ---
-- name: spring-petclinic installation
+- name: spring-petclinic-installation
   hosts: all
   become: yes
   tasks:
-  - name: install openjdk
-    apt:
-      name: openjdk-11-jdk
-      update_cache: yes
-      state: present
-  - name: creat a directory
-    file:
-      path: /usr/share/springpetclinic
-      state: directory
-  - name: download url
-    get_url:
-      url: https://referenceapplicationskhaja.s3-us-west-2.amazonaws.com/spring-petclinic-2.4.2.jar
-      dest: /usr/share/springpetclinic/spring-petclinic-2.4.2.jar
-  - name: adduser
-    user:
-      name: springbootuser
-      password: springbootuser
-      state: present
-  - name: change ownership
-    file:
-      path: /usr/share/springpetclinic/spring-petclinic-2.4.2.jar
-      owner: springbootuser
-      mode: '500'
-      state: file
-  - name: copy service file
-    copy:
-      src: springpetclinic.service
-      dest: /etc/systemd/system/springpetclinic.service
-  - name: systemd enable
-    systemd:
-       name: springpetclinic.service
-       enabled: yes
-       state: started
+   - name: install openjdk
+     apt:
+       name: openjdk-11-jdk
+       update_cache: yes
+       state: present
+   - name: creat a directory
+     file:
+       path: /usr/share/springpetclinic
+       state: directory
+     notify:
+       - debug message for directory creation
+   - name: download url
+     get_url:
+       url: https://referenceapplicationskhaja.s3-us-west-2.amazonaws.com/spring-petclinic-2.4.2.jar
+       dest: /usr/share/springpetclinic/spring-petclinic-2.4.2.jar
+   - name: adduser
+     user:
+       name: springbootuser
+       password: springbootuser
+       state: present
+   - name: change ownership
+     file:
+       path: /usr/share/springpetclinic/spring-petclinic-2.4.2.jar
+       owner: springbootuser
+       mode: '500'
+       state: file
+   - name: copy service file
+     copy:
+       src: springpetclinic.service
+       dest: /etc/systemd/system/springpetclinic.service
+   - name: systemd enable
+     systemd:
+        name: springpetclinic.service
+        enabled: yes
+  handlers:
+   - name: debug message for directory creation
+     debug:
+       msg: 'directory created'

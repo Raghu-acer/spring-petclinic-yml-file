@@ -34,5 +34,5 @@
   - name: systemd enable
     systemd:
        name: springpetclinic.service
-       enable: yes
+       enabled: yes
        state: started

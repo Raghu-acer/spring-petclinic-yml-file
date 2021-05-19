@@ -1,2 +1,6 @@
 ---
-# handlers file for petliclicrole
+# handlers file for 
+  handlers:
+   - name: debug message for directory creation
+     debug:
+       msg: 'directory created'
